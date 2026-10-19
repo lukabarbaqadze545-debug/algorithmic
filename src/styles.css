@@ -1,0 +1,120 @@
+@import '@fontsource/noto-sans-georgian/400.css';
+@import '@fontsource/noto-sans-georgian/500.css';
+@import '@fontsource/noto-serif-georgian/400.css';
+@import '@fontsource/noto-serif-georgian/500.css';
+@import '@fontsource/noto-serif-georgian/600.css';
+@import '@fontsource/cormorant-garamond/500.css';
+@import '@fontsource/cormorant-garamond/600.css';
+@import 'tailwindcss';
+
+@theme {
+  --color-ink: #08090c;
+  --color-navy: #0d1b34;
+  --color-gold: #d4af50;
+  --color-ivory: #f5f0e5;
+  --color-muted: #a9a7a2;
+  --color-line: rgba(212, 175, 80, 0.2);
+  --color-line-soft: rgba(245, 240, 229, 0.1);
+
+  /* Georgian text always has a Georgian-capable family; Cormorant is used for Latin brand lettering only. */
+  --font-sans: 'Noto Sans Georgian', system-ui, sans-serif;
+  --font-display: 'Noto Serif Georgian', 'Noto Serif', Georgia, serif;
+  --font-brand: 'Cormorant Garamond', 'Noto Serif Georgian', Georgia, serif;
+
+  --breakpoint-xs: 30rem;
+}
+
+@layer base {
+  html {
+    background: var(--color-ink);
+    color-scheme: dark;
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+  body {
+    margin: 0;
+    background: var(--color-ink);
+    color: var(--color-ivory);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.8;
+    overflow-x: clip;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    line-height: 1.25;
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+  ::selection {
+    background: rgba(212, 175, 80, 0.35);
+    color: var(--color-ivory);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 4px;
+    border-radius: 2px;
+  }
+  main:focus {
+    outline: none;
+  }
+}
+
+@layer components {
+  /* Latin brand lettering: widely tracked caps. Never apply to Georgian text. */
+  .brand-caps {
+    font-family: var(--font-brand);
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+  }
+  /* Small editorial label (Georgian-safe: no uppercase, restrained tracking). */
+  .eyebrow {
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    color: var(--color-gold);
+    letter-spacing: 0.04em;
+  }
+  .numeral {
+    font-family: var(--font-brand);
+    font-weight: 500;
+    font-feature-settings: 'lnum' 1;
+    color: var(--color-gold);
+  }
+  /* Comfortable measure for Georgian running text. */
+  .prose-ka {
+    max-width: 62ch;
+    color: var(--color-muted);
+  }
+  .page-in {
+    animation: page-in 480ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .page-in {
+    animation: none;
+  }
+}
