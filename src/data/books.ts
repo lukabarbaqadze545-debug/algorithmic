@@ -34,8 +34,8 @@ export interface BookPart {
 export interface Book {
   id: string
   slug: string
-  /** Roman numeral of the volume, as on the cover. */
-  volume: string
+  /** Roman numeral of the volume, as on the cover. Only for books that belong to the Python series. */
+  volume?: string
   title: string
   subtitle?: string
   /** One or two sentences for the catalogue. */
@@ -62,12 +62,12 @@ export const series = {
   label: 'სრული სახელმძღვანელო ქართულად',
 }
 
-const coverOf = (base: string, alt: string): BookCoverImage => ({
+const coverOf = (base: string, alt: string, width = 2448, height = 3435): BookCoverImage => ({
   src: `/images/books/${base}-1400.webp`,
   srcSet: `/images/books/${base}-800.webp 800w, /images/books/${base}-1400.webp 1400w`,
   alt,
-  width: 2448,
-  height: 3435,
+  width,
+  height,
 })
 
 export const books: Book[] = [
@@ -136,7 +136,41 @@ export const books: Book[] = [
     status: 'in-preparation',
     cover: coverOf('python-3-veb-avtomatizacia-da-proeqtebi', 'პითონი, III ტომი — „ვებ, ავტომატიზაცია და პროექტები“. წიგნის გარეკანი'),
   },
+  // Standalone editions (not part of the Python series). Only the title and cover are confirmed so far.
+  {
+    id: 'dalupuli-gmirebi',
+    slug: 'dalupuli-gmirebi',
+    title: 'დაღუპული გმირები',
+    subtitle: 'ქართველი გმირების სია ძველი დროიდან დღემდე',
+    status: 'in-preparation',
+    cover: coverOf('dalupuli-gmirebi', '„დაღუპული გმირები“ — ქართველი გმირების სია ძველი დროიდან დღემდე. წიგნის გარეკანი', 1600, 1600),
+  },
+  {
+    id: 'manipulaciis-fsiqologia',
+    slug: 'manipulaciis-fsiqologia',
+    title: 'მანიპულაციის ფსიქოლოგია',
+    status: 'in-preparation',
+    cover: coverOf('manipulaciis-fsiqologia', '„მანიპულაციის ფსიქოლოგია“. წიგნის გარეკანი', 1600, 2000),
+  },
+  {
+    id: 'konspiraciuli-teoriebi',
+    slug: 'msoflios-50-yvelaze-cnobili-konspiraciuli-teoria',
+    title: 'მსოფლიოს 50 ყველაზე ცნობილი კონსპირაციული თეორია',
+    status: 'in-preparation',
+    cover: coverOf('50-konspiraciuli-teoria', '„მსოფლიოს 50 ყველაზე ცნობილი კონსპირაციული თეორია“. წიგნის გარეკანი', 1600, 2000),
+  },
+  {
+    id: 'biznesi-nulidan',
+    slug: 'biznesi-nulidan',
+    title: 'ბიზნესი ნულიდან',
+    status: 'in-preparation',
+    cover: coverOf('biznesi-nulidan', '„ბიზნესი ნულიდან“. წიგნის გარეკანი', 1600, 2000),
+  },
 ]
+
+/** The three Python volumes (in reading order) and the standalone editions. */
+export const pythonBooks = books.filter((b) => b.volume)
+export const otherBooks = books.filter((b) => !b.volume)
 
 export const statusLabels: Record<BookStatus, string> = {
   'in-preparation': 'მზადდება',
@@ -144,5 +178,5 @@ export const statusLabels: Record<BookStatus, string> = {
   available: 'ხელმისაწვდომია',
 }
 
-export const volumeLabel = (b: Book) => `${series.title} · ${b.volume} ტომი`
+export const volumeLabel = (b: Book) => (b.volume ? `${series.title} · ${b.volume} ტომი` : 'Algorithmic')
 export const findBook = (slug: string | undefined) => books.find((b) => b.slug === slug)

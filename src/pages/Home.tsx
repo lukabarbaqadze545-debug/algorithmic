@@ -7,7 +7,7 @@ import { SectionHeading } from '../components/SectionHeading'
 import { BookCard } from '../components/BookCard'
 import { EditorialDivider } from '../components/EditorialDivider'
 import { Reveal } from '../components/Reveal'
-import { books } from '../data/books'
+import { otherBooks, pythonBooks } from '../data/books'
 import { useSeo } from '../lib/seo'
 
 const values = [
@@ -97,7 +97,7 @@ export default function Home() {
               <SectionHeading
                 eyebrow="პითონის სამტომეული"
                 title="ჩვენი გამოცემები"
-                text="გაეცანი Algorithmic-ის პირველ სახელმძღვანელოებს."
+                text="გაეცანი Algorithmic-ის გამოცემებს."
               />
             </div>
             <Link to="/books" className="group inline-flex items-center gap-2 text-sm text-gold">
@@ -107,9 +107,22 @@ export default function Home() {
           </Reveal>
 
           <ul className="mt-16 grid gap-16 md:grid-cols-3 md:gap-8 lg:gap-14">
-            {books.map((book, i) => (
+            {pythonBooks.map((book, i) => (
               <li key={book.id}>
                 <Reveal delay={i * 0.08}>
+                  <BookCard book={book} />
+                </Reveal>
+              </li>
+            ))}
+          </ul>
+
+          <Reveal className="mt-24 border-t border-line pt-12">
+            <p className="eyebrow">სხვა გამოცემები</p>
+          </Reveal>
+          <ul className="mt-10 grid items-start gap-14 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+            {otherBooks.map((book, i) => (
+              <li key={book.id}>
+                <Reveal delay={i * 0.06}>
                   <BookCard book={book} />
                 </Reveal>
               </li>

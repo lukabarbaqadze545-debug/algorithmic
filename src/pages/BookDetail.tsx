@@ -7,7 +7,7 @@ import { AvailabilityLabel } from '../components/AvailabilityLabel'
 import { InterestAction } from '../components/InterestAction'
 import { SecondaryButton } from '../components/Button'
 import { Reveal } from '../components/Reveal'
-import { books, findBook, series, statusLabels, volumeLabel, type Book } from '../data/books'
+import { findBook, otherBooks, pythonBooks, series, statusLabels, volumeLabel, type Book } from '../data/books'
 import { useSeo } from '../lib/seo'
 import NotFound from './NotFound'
 
@@ -39,7 +39,8 @@ const has = (a?: unknown[]) => Boolean(a?.length)
 
 function Detail({ book }: { book: Book }) {
   useSeo(book.title, book.summary ?? `${book.title} — ${volumeLabel(book)}, Algorithmic.`)
-  const others = books.filter((b) => b.id !== book.id)
+  // Related books come from the same group (Python series vs. standalone editions).
+  const others = (book.volume ? pythonBooks : otherBooks).filter((b) => b.id !== book.id)
 
   return (
     <PageContainer className="pb-24 pt-28 lg:pb-32 lg:pt-36">
@@ -68,8 +69,12 @@ function Detail({ book }: { book: Book }) {
           {book.summary && <p className="prose-ka mt-6 text-lg">{book.summary}</p>}
 
           <dl className="mt-10 grid grid-cols-[auto_1fr] gap-x-8 gap-y-4 border-y border-line py-7 text-[0.95rem]">
-            <dt className="text-muted">სერია</dt>
-            <dd className="text-ivory">{series.title} — {series.tagline}</dd>
+            {book.volume && (
+              <>
+                <dt className="text-muted">სერია</dt>
+                <dd className="text-ivory">{series.title} — {series.tagline}</dd>
+              </>
+            )}
             <dt className="text-muted">სტატუსი</dt>
             <dd className="text-ivory">{statusLabels[book.status]}</dd>
             {book.price && (
@@ -143,7 +148,7 @@ function Detail({ book }: { book: Book }) {
       </div>
 
       <Reveal className="mt-16">
-        <h2 className="eyebrow mb-6">სხვა ტომები</h2>
+        <h2 className="eyebrow mb-6">{book.volume ? 'სხვა ტომები' : 'სხვა გამოცემები'}</h2>
         <ul className="grid gap-4 md:grid-cols-2">
           {others.map((b) => (
             <li key={b.id}>
@@ -151,10 +156,10 @@ function Detail({ book }: { book: Book }) {
                 to={`/books/${b.slug}`}
                 className="flex h-full items-baseline gap-5 border border-line px-5 py-4 transition-colors hover:border-gold/60 hover:bg-gold/[0.04]"
               >
-                <span className="numeral w-9 shrink-0 text-xl">{b.volume}</span>
+                {b.volume && <span className="numeral w-9 shrink-0 text-xl">{b.volume}</span>}
                 <span>
                   <span className="block text-ivory">{b.title}</span>
-                  <span className="mt-1 block text-sm text-muted">{b.subtitle}</span>
+                  {b.subtitle && <span className="mt-1 block text-sm text-muted">{b.subtitle}</span>}
                 </span>
               </Link>
             </li>
