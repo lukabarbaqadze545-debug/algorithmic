@@ -1,0 +1,3 @@
+# Unofficial concept draft. Not for indexing.
+User-agent: *
+Disallow: /
