@@ -1,5 +1,7 @@
 # ALGORITHMIC
 
+> ახალი პროექტი **NEXTGEN** (Next.js + Supabase) მდებარეობს [`nextgen/`](./nextgen) საქაღალდეში.
+
 Georgian-language website for the Algorithmic programming-textbook imprint (pre-launch showcase).
 React 19 · TypeScript · Vite · Tailwind CSS v4 · React Router · Lucide · Motion. Fully static, no backend.
 
